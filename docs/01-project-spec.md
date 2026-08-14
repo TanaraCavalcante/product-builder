@@ -69,8 +69,7 @@ Lo strumento si rivolge a chiunque voglia capire la propria busta paga: quante t
 ### Setup progetto
 - [ ] Nuovo progetto Laravel 12
 - [ ] Installazione Bootstrap 5 (CDN)
-- [ ] Installazione Livewire 3
-- [ ] Struttura cartelle: `app/Services/`, `app/Livewire/`, `docs/`
+- [ ] Struttura cartelle: `app/Services/`, `docs/`
 - [ ] File di documentazione tecnica in `docs/`
 
 ### Logica di calcolo — `SalaryCalculatorService`
