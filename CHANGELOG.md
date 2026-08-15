@@ -1,3 +1,18 @@
+## [2026-08-15] - Implementazione logica di calcolo (Fase 2)
+
+### Aggiunto
+- `app/Services/SalaryCalculatorService.php`: calcolo completo RAL → netto (INPS, IRPEF a scaglioni, detrazione lavoro dipendente con bonus, addizionale regionale Lombardia e comunale Milano, netto annuale/mensile, TFR informativo), verificato contro il caso di riferimento RAL €30.000 → netto €22.425,52/anno
+- `app/Http/Controllers/SalaryController.php`: `index()` per la view, `calcola()` con validazione e try/catch, risposta in JSON
+- Rotte `GET /` e `POST /calcola` in `routes/web.php`
+
+### Modificato
+- Rinominata la view `welcome.blade.php` in `calcolator.blade.php`
+- Rimosso il selettore "tipo di contratto" dallo scope: verificato empiricamente che non incide mai sul risultato assumendo un anno lavorativo pieno (già semplificazione dichiarata); il prototipo copre solo il caso a tempo indeterminato
+- Rimossi dalla spec i toggle "tredicesima/quattordicesima inclusa": nessuna formula dipende da questi valori, dato che la RAL rappresenta già il totale annuo
+
+### Corretto
+- `docs/02-salary-calculator-reference.md`: applicato il bonus di €65 (Art. 13 TUIR) mancante nell'esempio di calcolo RAL €30.000, corretto il valore del TFR mensile informativo (€158,73, non €148,15), aggiunte fonti governative primarie (Agenzia Entrate, Gazzetta Ufficiale, Regione Lombardia) e nota di trasparenza sull'aliquota INPS
+
 ## [2026-08-15] - Installazione Laravel Boost e piano calcolatore RAL
 
 ### Aggiunto

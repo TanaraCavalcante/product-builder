@@ -9,16 +9,37 @@
 
 ## 1. Fonti Ufficiali Consultate
 
+### 1.1 Fonti governative primarie (testo di legge)
+
 | Fonte | Contenuto |
 |---|---|
+| [Agenzia delle Entrate — Testo Unico Imposte sui Redditi, Art. 13](https://www.agenziaentrate.gov.it/portale/documents/20143/255456/Articolo+13+del+Dpr+917_1986_art13_dpr917_1986.pdf/328e081f-d939-e7de-4472-0e573ce44367) | Testo ufficiale dell'Art. 13 TUIR (DPR 917/1986): detrazioni per lavoro dipendente, minimo garantito, bonus aggiuntivo |
 | [Agenzia delle Entrate — Aliquote IRPEF](https://www.agenziaentrate.gov.it/portale/imposta-sul-reddito-delle-persone-fisiche-irpef-/aliquote-e-calcolo-dell-irpef-cittadini) | Scaglioni e aliquote IRPEF 2025/2026 |
 | [Circolare n.4 del 16/05/2025 — Agenzia Entrate](https://www.agenziaentrate.gov.it/portale/documents/20143/8410823/Circolare+lavoro+dipendente+LB2025+DD+IRPEF+n.+4+del+16+maggio+2025.pdf/36979eaa-9fc5-a4ec-a7aa-136497c53f91) | Lavoro dipendente, LB2025, detrazioni |
-| [Directio — Addizionali Regionali 2026](https://directio.it/News/Details/11189/addizionale-regionale-irpef-aliquote-2026) | Aliquote Lombardia e Toscana per scaglione |
-| [TuttoCalcolo — Addizionale Milano](https://www.tuttocalcolo.it/addizionale-irpef/lombardia/milano) | Addizionale comunale Milano: 0,80% |
-| [CAF Informa — Detrazioni Lavoro Dipendente](https://cafinforma.it/detrazioni-lavoro-dipendente-2026/) | Formule detrazioni per reddito 2026 |
-| [GEPS — Legge 199/2025](https://www.geps.it/legge-di-bilancio-2026-l-199-2025-10905/) | Cuneo fiscale strutturale 2026 |
+| [Gazzetta Ufficiale — Legge 30 dicembre 2025, n. 199](https://www.gazzettaufficiale.it/eli/id/2025/12/30/25G00212/SG) | Testo ufficiale della Legge di Bilancio 2026 (riduzione secondo scaglione IRPEF al 33%, cuneo fiscale) |
+| [Gazzetta Ufficiale — Art. 2120 Codice Civile](https://www.gazzettaufficiale.it/atto/serie_generale/caricaArticolo?art.progressivo=0&art.idArticolo=2120&art.versione=5&art.codiceRedazionale=042U0262&art.dataPubblicazioneGazzetta=1942-04-04&art.idGruppo=267&art.idSottoArticolo1=10&art.idSottoArticolo=1&art.flagTipoArticolo=2) | Disciplina legale del TFR: divisore 13,5 |
+| [Regione Lombardia — Addizionale Regionale all'IRPEF](https://www.regione.lombardia.it/bollo-auto-e-tributi-regionali/red-addizionale-regionale-irpef) | Pagina ufficiale della Regione con le aliquote in vigore |
+| [Consiglio Regionale Lombardia — L.R. 14 luglio 2003, n. 10, Art. 72](https://normelombardia.consiglio.regione.lombardia.it/normelombardia/Accessibile/main.aspx?view=showpart&selnode=lr002003071400010&idparte=lr002003071400010) | Testo ufficiale della norma che istituisce l'addizionale regionale Lombardia per scaglioni |
+
+### 1.2 Fonti specializzate (verifica pratica delle aliquote)
+
+| Fonte | Contenuto |
+|---|---|
+| [Directio — Addizionali Regionali 2026](https://directio.it/News/Details/11189/addizionale-regionale-irpef-aliquote-2026) | Aliquote Lombardia e Toscana per scaglione, aggregate dai dati regionali ufficiali |
+| [TuttoCalcolo — Addizionale Milano](https://www.tuttocalcolo.it/addizionale-irpef/lombardia/milano) | Addizionale comunale Milano: 0,80% (dato verificabile sul sito del Comune di Milano) |
+| [CAF Informa — Detrazioni Lavoro Dipendente](https://cafinforma.it/detrazioni-lavoro-dipendente-2026/) | Formule detrazioni per reddito 2026, CAF = Centro Assistenza Fiscale autorizzato |
+| [GEPS — Legge 199/2025](https://www.geps.it/legge-di-bilancio-2026-l-199-2025-10905/) | Analisi tecnica del cuneo fiscale strutturale 2026 |
+
+### 1.3 Verifica empirica
+
+| Fonte | Contenuto |
+|---|---|
 | Busta paga reale "Marco Ferretti" — Luglio 2026 | CCNL Terziario, 3^ livello, indeterminato |
 | Busta paga reale "Sofia Monteiro" — Maggio 2026 | CCNL Terziario, 5^ livello, determinato |
+
+> **Nota sull'aliquota INPS (9,19%):** questo valore proviene dalla verifica diretta sulle due buste paga reali fornite per l'analisi (sezione 1.3), non da un testo normativo citato direttamente in questo documento. È stato tentato l'accesso a due pagine ufficiali del [Portale INPS](https://www.inps.it/it/it/inps-comunica/diritti-e-obblighi-in-materia-di-sicurezza-sociale-nell-unione-e/per-le-imprese/aliquote-contributive.html) (la sezione "Aliquote contributive" e la Circolare n. 108 del 02/07/2025 con relativa tabella allegata) ma nessuna delle due ha restituito un testo estraibile e citabile con certezza in questa sessione di ricerca.
+>
+> **Sull'eventuale variazione per Milano:** a differenza dell'addizionale regionale/comunale (sovrattassa locale sull'IRPEF, per definizione diversa da regione a regione), il contributo INPS è amministrato da un ente previdenziale nazionale unico e — per struttura del sistema italiano — non varia in base al comune o alla regione di residenza/lavoro. A supporto di questo: (1) le due buste paga analizzate, entrambe di dipendenti residenti in **Toscana**, riportano lo stesso identico 9,19%; (2) [TuttoCalcolato — Calcolo Stipendio Netto Milano](https://tuttocalcolato.it/calcolo/stipendio-netto/milano/), una guida dedicata specificamente al calcolo dello stipendio a Milano, conferma testualmente la stessa aliquota: *"contributi INPS del lavoratore (9,19% fino al massimale...)"*. Nessuna fonte consultata indica un'aliquota INPS differenziata per Milano/Lombardia.
 
 ---
 
@@ -450,15 +471,18 @@ Se la RAL include già 13° e 14°:
 **Step 4 — Detrazione per lavoro dipendente**
 ```
 Reddito €27.243 → fascia €15.001–€28.000
-Detrazione = 1.910 + 1.190 × (28.000 - 27.243) / 13.000
-           = 1.910 + 1.190 × 0,0582
-           = 1.910 + 69,26
-           = €1.979,26
+Detrazione base = 1.910 + 1.190 × (28.000 - 27.243) / 13.000
+                = 1.910 + 1.190 × 0,0582
+                = 1.910 + 69,29
+                = €1.979,29
+
+Reddito €27.243 rientra anche nella fascia €25.000–€35.000 → bonus aggiuntivo (Art. 13 TUIR)
+Detrazione totale = 1.979,29 + 65,00 = €2.044,29
 ```
 
 **Step 5 — IRPEF netta**
 ```
-€6.265,89 - €1.979,26 = €4.286,63/anno
+€6.265,89 - €2.044,29 = €4.221,60/anno
 ```
 
 **Step 6 — Addizionale Regionale Lombardia**
@@ -475,12 +499,12 @@ Totale addizionale regionale:                     €377,94/anno
 
 **Step 8 — Netto annuale**
 ```
-€30.000 - €2.757,00 - €4.286,63 - €377,94 - €217,94 = €22.360,49/anno
+€30.000 - €2.757,00 - €4.221,60 - €377,94 - €217,94 = €22.425,52/anno
 ```
 
 **Step 9 — Netto mensile medio**
 ```
-€22.360,49 / 12 = €1.863,37/mese
+€22.425,52 / 12 = €1.868,79/mese
 ```
 
 ### Riepilogo
@@ -489,12 +513,12 @@ Totale addizionale regionale:                     €377,94/anno
 |---|---|---|
 | RAL (lordo) | €30.000,00 | 100,00% |
 | (-) INPS dipendente | -€2.757,00 | 9,19% |
-| (-) IRPEF netta | -€4.286,63 | 14,29% |
+| (-) IRPEF netta | -€4.221,60 | 14,07% |
 | (-) Addizionale Regionale | -€377,94 | 1,26% |
 | (-) Addizionale Comunale | -€217,94 | 0,73% |
-| **NETTO ANNUALE** | **€22.360,49** | **74,53%** |
-| **NETTO MENSILE MEDIO** | **€1.863,37** | |
-| TFR accantonato (informativo) | ~€148,15/mese | non detratto |
+| **NETTO ANNUALE** | **€22.425,52** | **74,75%** |
+| **NETTO MENSILE MEDIO** | **€1.868,79** | |
+| TFR accantonato (informativo) | ~€158,73/mese | non detratto |
 
 ---
 

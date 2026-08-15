@@ -27,10 +27,9 @@ Lo strumento si rivolge a chiunque voglia capire la propria busta paga: quante t
 
 | Campo | Tipo | Obbligatorio |
 |---|---|---|
-| RAL (€) | Numero intero o decimale | Sì |
-| La tredicesima è inclusa nella RAL? | Toggle sì/no | Sì |
-| La quattordicesima è inclusa nella RAL? | Toggle sì/no | Sì |
-| Tipo di contratto | Selettore (indeterminato / determinato) | No (default: indeterminato) |
+| RAL (€) | Numero intero o decimale, maggiore di zero | Sì |
+
+> **Nota:** i toggle "tredicesima/quattordicesima inclusa" e il selettore "tipo di contratto" previsti in una prima bozza sono stati rimossi. La RAL rappresenta già il totale annuo (nessuna formula dipende da come si distribuisce nei mesi), e il prototipo copre solo il caso a tempo indeterminato dichiarato nella consegna del progetto — un selettore determinato/indeterminato non avrebbe comunque cambiato alcun risultato, essendo il minimo garantito Art. 13 TUIR irraggiungibile assumendo un anno lavorativo pieno (vedi `docs/plan-salary-calculator.md`, sezione Rischi e note).
 
 ### Output — Risultati da mostrare
 
@@ -84,7 +83,7 @@ Lo strumento si rivolge a chiunque voglia capire la propria busta paga: quante t
   - [ ] Fascia €15.001–€28.000 → formula proporzionale
   - [ ] Fascia €28.001–€50.000 → formula decrescente
   - [ ] Oltre €50.000 → €0
-  - [ ] Detrazione minima garantita per contratto indeterminato (€1.380)
+  - [x] ~~Detrazione minima garantita per contratto indeterminato (€1.380)~~ — non implementata: irraggiungibile assumendo un anno lavorativo pieno (la formula base non scende mai sotto €1.910 nella fascia dove il minimo si applicherebbe)
   - [ ] Bonus €65 per redditi tra €25.000 e €35.000
 - [ ] Calcolo IRPEF netta (lorda - detrazione)
 - [ ] Calcolo Addizionale Regionale Lombardia per scaglioni
@@ -117,7 +116,7 @@ Lo strumento si rivolge a chiunque voglia capire la propria busta paga: quante t
 - [ ] Testi e label tutti in italiano
 
 ### Qualità e correttezza
-- [ ] Verifica del calcolo con il caso di esempio: RAL €30.000 → netto €22.360,49/anno (€1.863,37/mese)
+- [ ] Verifica del calcolo con il caso di esempio: RAL €30.000 → netto €22.425,52/anno (€1.868,79/mese)
 - [ ] Test manuale con RAL bassa (€15.000), media (€30.000) e alta (€80.000)
 - [ ] Gestione edge case: RAL €0, RAL molto alta (€200.000+)
 
