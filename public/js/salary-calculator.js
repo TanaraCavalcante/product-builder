@@ -16,6 +16,47 @@ function formattaValuta(valore) {
     return formatterValuta.format(valore);
 }
 
+// Istanza del grafico: va distrutta e ricreata ad ogni calcolo, altrimenti Chart.js
+// solleva un errore "Canvas is already in use" riusando lo stesso <canvas>.
+let graficoBreakdown = null;
+
+function renderGrafico(dati) {
+    if (graficoBreakdown) {
+        graficoBreakdown.destroy();
+    }
+
+    const contesto = document.getElementById('grafico-breakdown');
+
+    graficoBreakdown = new Chart(contesto, {
+        type: 'doughnut',
+        data: {
+            labels: ['Netto annuale', 'INPS', 'IRPEF netta', 'Addizionale Regionale', 'Addizionale Comunale'],
+            datasets: [
+                {
+                    data: [
+                        dati.netto_annuale,
+                        dati.inps,
+                        dati.irpef_netta,
+                        dati.addizionale_regionale,
+                        dati.addizionale_comunale,
+                    ],
+                    backgroundColor: ['#198754', '#dc3545', '#fd7e14', '#ffc107', '#6f42c1'],
+                },
+            ],
+        },
+        options: {
+            plugins: {
+                legend: { position: 'bottom' },
+                tooltip: {
+                    callbacks: {
+                        label: (voce) => `${voce.label}: ${formattaValuta(voce.raw)}`,
+                    },
+                },
+            },
+        },
+    });
+}
+
 // Avviso non bloccante: una RAL molto alta potrebbe indicare zeri di troppo per errore.
 // Il pulsante "pulisci" appare solo quando il campo contiene qualcosa da cancellare.
 ralInput.addEventListener('input', () => {
@@ -103,5 +144,9 @@ function mostraRisultato(dati) {
 
     document.getElementById('tfr-informativo').textContent = formattaValuta(dati.tfr_mensile_informativo);
 
+    // Il canvas deve essere visibile (non display:none) prima che Chart.js lo misuri,
+    // altrimenti calcola un'area 0x0 e il grafico resta vuoto anche dopo aver tolto d-none
     risultatoSection.classList.remove('d-none');
+
+    renderGrafico(dati);
 }

@@ -1,3 +1,12 @@
+## [2026-08-15] - Grafico distribuzione RAL e fix cache asset
+
+### Aggiunto
+- Grafico a ciambella (Chart.js via CDN) con la distribuzione della RAL: netto, INPS, IRPEF netta, addizionale regionale, addizionale comunale, con tooltip e legenda
+- Query string di versione (`?v={{ filemtime(...) }}`) su `app.css` e `salary-calculator.js`, per evitare che il browser serva una versione in cache dopo una modifica (nessun build step/Vite per gestirlo automaticamente)
+
+### Corretto
+- Il grafico veniva creato mentre il contenitore era ancora `d-none`: Chart.js misurava un'area 0x0 e restava vuoto anche dopo aver mostrato la sezione. Ora il grafico viene creato solo dopo aver reso visibile la sezione risultati
+
 ## [2026-08-15] - Interfaccia del calcolatore RAL (Fase 4)
 
 ### Aggiunto

@@ -8,7 +8,7 @@
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/app.css') }}?v={{ filemtime(public_path('css/app.css')) }}" rel="stylesheet">
     </head>
     <body class="bg-light">
         <main class="container py-5">
@@ -129,6 +129,13 @@
                     </div>
                 </div>
 
+                <div class="card shadow-sm mt-3">
+                    <div class="card-body">
+                        <h2 class="h6 mb-3">Distribuzione della RAL</h2>
+                        <canvas id="grafico-breakdown" height="220"></canvas>
+                    </div>
+                </div>
+
                 <p class="text-muted small mt-3 mb-0">
                     <i class="fa-regular fa-circle-question me-1"></i>
                     TFR accantonato (informativo, non trattenuto dal netto): <span id="tfr-informativo">—</span>/mese
@@ -136,6 +143,7 @@
             </section>
         </main>
 
-        <script src="{{ asset('js/salary-calculator.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+        <script src="{{ asset('js/salary-calculator.js') }}?v={{ filemtime(public_path('js/salary-calculator.js')) }}"></script>
     </body>
 </html>

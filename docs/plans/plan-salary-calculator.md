@@ -38,9 +38,9 @@ Nessun login, nessuna persistenza: ogni richiesta è un calcolo stateless.
 - [x] Suite completa: 15 test, 61 assertion, tutti verdi. Pint conforme
 
 ### Fase 4 — Frontend — COMPLETATA (2026-08-15)
-- [x] Design definito e validato con l'utente prima del Blade: layout impilato (form in alto, risultato sotto dopo il calcolo), senza grafico Chart.js (bonus scartato per restare essenziali)
+- [x] Design definito e validato con l'utente prima del Blade: layout impilato (form in alto, risultato sotto dopo il calcolo)
 - [x] Creata `resources/views/calcolator.blade.php`: form + sezione risultati inizialmente nascosta + sezione errori dedicata (`#errore`), pulita e organizzata
-- [x] Incluso via CDN: Bootstrap 5, Font Awesome (Chart.js scartato, vedi sopra)
+- [x] Incluso via CDN: Bootstrap 5, Font Awesome, Chart.js (aggiunto in un secondo momento su richiesta esplicita — donut con il breakdown completo: netto + INPS + IRPEF netta + addizionale regionale + addizionale comunale)
 - [x] Layout responsivo solo con classi Bootstrap (`input-group`, `card`, `table`, `badge`, `row`/`col-6`)
 - [x] Creato `public/css/app.css`: solo 2 regole non coperte da Bootstrap (max-width del container, rimozione frecce spinner input number)
 - [x] Creato `public/js/salary-calculator.js`: intercetta il submit, `fetch()` POST a `/calcola` con header CSRF, aggiorna il DOM o mostra l'errore
