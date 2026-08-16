@@ -3,6 +3,8 @@
 Data: 2026-08-15
 Stato: APPROVATO
 
+**Progresso**: Fase 1 (N/A) → Fase 2 ✅ completata → Fase 3 ✅ completata → Fase 4 ⏳ da iniziare (design da definire prima del Blade)
+
 **Esecuzione**: una fase alla volta. Si passa alla fase successiva solo dopo che l'utente ha analizzato e autorizzato esplicitamente il lavoro della fase corrente.
 
 ## Obiettivo
@@ -19,23 +21,23 @@ Nessun login, nessuna persistenza: ogni richiesta è un calcolo stateless.
 
 ## Attività
 
-### Fase 1 — Database e modelli
-- [ ] Nessuna: il prototipo non usa persistenza, non ci sono migration né modelli da creare.
+### Fase 1 — Database e modelli — N/A
+- [x] Non necessaria: il prototipo non usa persistenza, non ci sono migration né modelli da creare.
 
 ### Fase 2 — Controller e rotte (logica di calcolo) — COMPLETATA (2026-08-15)
-- [x] Creato `app/Services/SalaryCalculatorService.php` con metodo `calcola(float $ral, string $tipoContratto = 'indeterminato'): array`, diviso in step commentati (stesso ordine di `docs/02-salary-calculator-reference.md`). Verificato via tinker contro il caso di riferimento (RAL €30.000 → netto €22.425,52/anno) e contro RAL basse/alte/molto alte (€15.000, €80.000, €200.000): risultato coerente in tutti gli scaglioni
+- [x] Creato `app/Services/SalaryCalculatorService.php` con metodo `calcola(float $ral): array` (il tipo di contratto è stato rimosso dai parametri, vedi sezione Rischi e note), diviso in step commentati (stesso ordine di `docs/02-salary-calculator-reference.md`). Verificato via tinker contro il caso di riferimento (RAL €30.000 → netto €22.425,52/anno) e contro RAL basse/alte/molto alte (€15.000, €80.000, €200.000): risultato coerente in tutti gli scaglioni
 - [x] Validazione input spostata sul Controller (Laravel `validate()`): `ral` obbligatorio, numerico, maggiore di zero; `tipo_contratto` opzionale (`indeterminato` default / `determinato`). Il Service assume input già validi — separazione netta tra livello HTTP e logica di calcolo pura
 - [x] Creato `app/Http/Controllers/SalaryController.php` con `index()` (GET `/`) e `calcola(Request $request)` (POST `/calcola`, valida, chiama il Service in try/catch, ritorna JSON — mai uno stacktrace)
 - [x] Aggiunte le rotte in `routes/web.php`
 
-### Fase 3 — Test
-- [ ] Test unitari su `SalaryCalculatorService`: caso di riferimento RAL €30.000 → netto €22.425,52/anno (€1.868,79/mese), RAL bassa (€15.000), RAL alta (€80.000), edge case RAL molto alta (€200.000+)
-- [ ] Test differenza detrazione minima tra contratto determinato e indeterminato per reddito ≤ €28.000
-- [ ] Test di validazione: RAL €0 o negativa deve restituire errore, non un calcolo
-- [ ] Test feature sulla rotta POST `/calcola` (status code e struttura della risposta JSON)
-- [ ] Generare gli stub con `/tanas:test` prima di implementare (ciclo TDD red-green-refactor)
+### Fase 3 — Test — COMPLETATA (2026-08-15)
+- [x] `tests/Unit/Salary/SalaryCalculatorServiceTest.php`: caso di riferimento RAL €30.000 → netto €22.425,52/anno (€1.868,79/mese), RAL bassa (€15.000), RAL alta (€80.000, soglia massimale INPS), edge case RAL molto alta (€200.000)
+- [x] Test del bonus di detrazione €65 per imponibile fiscale tra €25.000 e €35.000 (attivo/non attivo)
+- [x] `tests/Feature/Salary/SalaryControllerTest.php`: `GET /` (200), `POST /calcola` con RAL valida (200 + struttura JSON completa), RAL assente/zero/negativa/non numerica (422 con errori di validazione)
+- [x] Configurazione test DB: `none` (nessun database, coerente con il progetto) — salvata con `manage_test_db_config`
+- [x] Suite completa: 15 test, 61 assertion, tutti verdi. Pint conforme
 
-### Fase 4 — Frontend
+### Fase 4 — Frontend — DA FARE
 - [ ] Definire e validare con l'utente il design (layout, disposizione form/risultati, gerarchia visiva dei valori principali) prima di scrivere qualunque Blade
 - [ ] Creare la view Blade (form + sezione risultati inizialmente nascosta + sezione errori dedicata), pulita e organizzata
 - [ ] Includere via CDN: Bootstrap 5, Font Awesome, Chart.js (per il grafico opzionale lordo/netto)

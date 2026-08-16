@@ -1,3 +1,13 @@
+## [2026-08-15] - Copertura test calcolatore RAL (Fase 3)
+
+### Aggiunto
+- `tests/Unit/Salary/SalaryCalculatorServiceTest.php`: caso di riferimento RAL €30.000, RAL bassa/alta/molto alta, soglia massimale INPS, bonus detrazione €65
+- `tests/Feature/Salary/SalaryControllerTest.php`: `GET /`, `POST /calcola` con RAL valida (struttura JSON) e casi di validazione (RAL assente/zero/negativa/non numerica)
+- Configurazione test DB salvata come `none` (nessun database, coerente con il progetto)
+
+### Modificato
+- Spostato `docs/plan-salary-calculator.md` in `docs/plans/plan-salary-calculator.md`; aggiunto riepilogo di avanzamento delle fasi in cima al documento
+
 ## [2026-08-15] - Implementazione logica di calcolo (Fase 2)
 
 ### Aggiunto
