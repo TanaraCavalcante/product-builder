@@ -3,7 +3,7 @@
 Data: 2026-08-15
 Stato: APPROVATO
 
-**Progresso**: Fase 1 (N/A) → Fase 2 ✅ completata → Fase 3 ✅ completata → Fase 4 ⏳ da iniziare (design da definire prima del Blade)
+**Progresso**: Fase 1 (N/A) → Fase 2 ✅ completata → Fase 3 ✅ completata → Fase 4 ✅ completata — piano completato
 
 **Esecuzione**: una fase alla volta. Si passa alla fase successiva solo dopo che l'utente ha analizzato e autorizzato esplicitamente il lavoro della fase corrente.
 
@@ -37,16 +37,18 @@ Nessun login, nessuna persistenza: ogni richiesta è un calcolo stateless.
 - [x] Configurazione test DB: `none` (nessun database, coerente con il progetto) — salvata con `manage_test_db_config`
 - [x] Suite completa: 15 test, 61 assertion, tutti verdi. Pint conforme
 
-### Fase 4 — Frontend — DA FARE
-- [ ] Definire e validare con l'utente il design (layout, disposizione form/risultati, gerarchia visiva dei valori principali) prima di scrivere qualunque Blade
-- [ ] Creare la view Blade (form + sezione risultati inizialmente nascosta + sezione errori dedicata), pulita e organizzata
-- [ ] Includere via CDN: Bootstrap 5, Font Awesome, Chart.js (per il grafico opzionale lordo/netto)
-- [ ] Usare esclusivamente classi Bootstrap esistenti per il layout responsivo (grid, form-control, card, badge, ecc.)
-- [ ] Creare `public/css/app.css`, file separato e minimale, solo per gli aggiustamenti che le classi Bootstrap non coprono
-- [ ] Creare `public/js/salary-calculator.js`, file separato incluso via `<script src>`, che intercetta il submit, fa `fetch()` POST a `/calcola`, aggiorna il DOM con i risultati o mostra gli errori nella sezione dedicata
-- [ ] Aggiungere l'avviso non bloccante ("sei sicuro che il valore sia giusto?") quando RAL > €200.000, gestito lato JS sotto il campo input
-- [ ] Verificare la responsività su mobile, tablet e desktop
-- [ ] Includere nella view un avviso visibile (non invasivo) che il calcolo si basa sulle regole fiscali di Milano/Lombardia, cosicché sia chiaro all'utente che il valore risulta impreciso se applicato ad altre regioni
+### Fase 4 — Frontend — COMPLETATA (2026-08-15)
+- [x] Design definito e validato con l'utente prima del Blade: layout impilato (form in alto, risultato sotto dopo il calcolo), senza grafico Chart.js (bonus scartato per restare essenziali)
+- [x] Creata `resources/views/calcolator.blade.php`: form + sezione risultati inizialmente nascosta + sezione errori dedicata (`#errore`), pulita e organizzata
+- [x] Incluso via CDN: Bootstrap 5, Font Awesome (Chart.js scartato, vedi sopra)
+- [x] Layout responsivo solo con classi Bootstrap (`input-group`, `card`, `table`, `badge`, `row`/`col-6`)
+- [x] Creato `public/css/app.css`: solo 2 regole non coperte da Bootstrap (max-width del container, rimozione frecce spinner input number)
+- [x] Creato `public/js/salary-calculator.js`: intercetta il submit, `fetch()` POST a `/calcola` con header CSRF, aggiorna il DOM o mostra l'errore
+- [x] Aggiunto l'avviso non bloccante ("Sei sicuro che il valore sia giusto?") quando RAL > €200.000, gestito lato JS
+- [x] Verificata la responsività (Bootstrap grid/input-group, nessun overflow orizzontale)
+- [x] Aggiunto l'avviso Milano/Lombardia in cima alla pagina
+- [x] Messaggi di validazione in italiano personalizzati nel Controller (il progetto non pubblica i lang file del framework, altrimenti la chiave di traduzione appariva grezza es. `validation.gt.numeric`)
+- [x] Pulsante "Reset" (`btn-danger`, icona + testo, dopo "Calcola"): visibile solo con testo nel campo, riporta il form allo stato iniziale
 
 ## Migration necessarie
 

@@ -1,0 +1,15 @@
+/* Bootstrap non ha un'utility per limitare la larghezza di un container in modo puntuale */
+.container {
+    max-width: 720px;
+}
+
+/* Bootstrap non ha un'utility per nascondere le frecce dello spinner nativo dell'input number */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type='number'] {
+    -moz-appearance: textfield;
+}

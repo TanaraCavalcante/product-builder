@@ -1,3 +1,13 @@
+## [2026-08-15] - Interfaccia del calcolatore RAL (Fase 4)
+
+### Aggiunto
+- `resources/views/calcolator.blade.php`: form RAL, pulsante Calcola, pulsante Reset (visibile solo a campo compilato), sezione risultati (breakdown completo, badge bonus/incidenza), sezione errori dedicata, avviso Milano/Lombardia, avviso non bloccante per RAL > €200.000
+- `public/css/app.css`: 2 regole minime non coperte da Bootstrap (max-width container, spinner input number)
+- `public/js/salary-calculator.js`: `fetch()` POST verso `/calcola` con token CSRF, aggiornamento del DOM senza reload
+
+### Corretto
+- Messaggi di validazione della RAL in italiano espliciti nel `SalaryController` (senza, la chiave di traduzione appariva grezza, es. `validation.gt.numeric`, perché il progetto non pubblica i lang file del framework)
+
 ## [2026-08-15] - Copertura test calcolatore RAL (Fase 3)
 
 ### Aggiunto

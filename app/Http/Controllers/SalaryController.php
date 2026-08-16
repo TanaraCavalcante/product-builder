@@ -29,6 +29,10 @@ class SalaryController extends Controller
     {
         $validated = $request->validate([
             'ral' => ['required', 'numeric', 'gt:0'],
+        ], [
+            'ral.required' => 'La RAL è obbligatoria.',
+            'ral.numeric' => 'La RAL deve essere un valore numerico.',
+            'ral.gt' => 'La RAL deve essere maggiore di zero.',
         ]);
 
         try {
