@@ -1,3 +1,11 @@
+## [2026-08-17] - Aggiornamento README
+
+### Modificato
+- Descrizione del progetto ampliata (voci del breakdown, assunzione stateless senza database)
+- Stack corretto: Chart.js non più segnato come opzionale, aggiunto Font Awesome
+- Aggiunto link al piano di implementazione completato in `docs/plans/`
+- Rimosso `php artisan migrate` dal setup locale: il progetto non usa database
+
 ## [2026-08-15] - Grafico distribuzione RAL e fix cache asset
 
 ### Aggiunto
