@@ -78,6 +78,13 @@ class SalaryCalculatorService
         // (non distingue i mesi con tredicesima/quattordicesima dai mesi ordinari)
         $nettoMensileMedio = $nettoAnnuale / 12;
 
+        // Step 9b — Netto per mese reale: il netto annuale si distribuisce su 14 quote
+        // uguali (coerente con la mensilità ordinaria RAL/14, sezione 3 del reference doc).
+        // Luglio e dicembre valgono 2 quote (ordinaria + 14esima/13esima); gli altri 10 mesi
+        // ne valgono 1. Non ricalcola l'IRPEF progressiva mese per mese: distribuisce in modo
+        // proporzionale, stessa semplificazione già dichiarata per il netto mensile medio.
+        $quotaMensile = $nettoAnnuale / 14;
+
         // Step 10 — TFR mensile informativo (Art. 2120 Codice Civile): accantonato
         // dall'azienda, non è una trattenuta e non riduce il netto percepito
         $tfrMensileInformativo = ($ral / 14) / 13.5;
@@ -102,6 +109,11 @@ class SalaryCalculatorService
             'incidenza_percentuale' => round($totaleTrattenute / $ral * 100, 2),
             'netto_annuale' => round($nettoAnnuale, 2),
             'netto_mensile_medio' => round($nettoMensileMedio, 2),
+            'netto_mensile_dettaglio' => [
+                'mese_ordinario' => round($quotaMensile, 2),
+                'mese_luglio_con_14esima' => round($quotaMensile * 2, 2),
+                'mese_dicembre_con_13esima' => round($quotaMensile * 2, 2),
+            ],
             'tfr_mensile_informativo' => round($tfrMensileInformativo, 2),
         ];
     }

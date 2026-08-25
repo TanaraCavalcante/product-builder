@@ -35,6 +35,12 @@ class SalaryCalculatorServiceTest extends TestCase
         $this->assertSame('indeterminato', $risultato['input']['tipo_contratto']);
         $this->assertSame('lombardia', $risultato['input']['regione']);
         $this->assertSame('Milano', $risultato['input']['comune_riferimento']);
+
+        // Netto annuale (€22.425,52) distribuito su 14 quote: 10 mesi ordinari da 1
+        // quota, luglio e dicembre da 2 quote (14esima/13esima)
+        $this->assertEqualsWithDelta(1601.82, $risultato['netto_mensile_dettaglio']['mese_ordinario'], 0.01);
+        $this->assertEqualsWithDelta(3203.65, $risultato['netto_mensile_dettaglio']['mese_luglio_con_14esima'], 0.01);
+        $this->assertEqualsWithDelta(3203.65, $risultato['netto_mensile_dettaglio']['mese_dicembre_con_13esima'], 0.01);
     }
 
     public function test_calcola_applica_gli_scaglioni_della_regione_selezionata(): void

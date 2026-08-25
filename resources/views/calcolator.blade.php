@@ -145,6 +145,32 @@
 
                 <div class="card shadow-sm mt-3">
                     <div class="card-body">
+                        <h2 class="h6 mb-3">Netto mensile per periodo</h2>
+                        <p class="text-muted small">
+                            Il CCNL Terziario prevede 14 mensilità: la RAL è distribuita su 12 mesi
+                            ordinari più tredicesima (dicembre) e quattordicesima (luglio).
+                        </p>
+                        <table class="table table-sm mb-0">
+                            <tbody>
+                                <tr>
+                                    <td>Mese ordinario (gen-giu, ago-nov)</td>
+                                    <td class="text-end fw-semibold" id="riga-netto-mese-ordinario">—</td>
+                                </tr>
+                                <tr>
+                                    <td>Luglio (con 14ª)</td>
+                                    <td class="text-end fw-semibold" id="riga-netto-mese-luglio">—</td>
+                                </tr>
+                                <tr>
+                                    <td>Dicembre (con 13ª)</td>
+                                    <td class="text-end fw-semibold" id="riga-netto-mese-dicembre">—</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm mt-3">
+                    <div class="card-body">
                         <h2 class="h6 mb-3">Distribuzione della RAL</h2>
                         <canvas id="grafico-breakdown" height="220"></canvas>
                     </div>

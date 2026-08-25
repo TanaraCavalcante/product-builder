@@ -34,6 +34,7 @@ class SalaryControllerTest extends TestCase
             'incidenza_percentuale',
             'netto_annuale',
             'netto_mensile_medio',
+            'netto_mensile_dettaglio' => ['mese_ordinario', 'mese_luglio_con_14esima', 'mese_dicembre_con_13esima'],
             'tfr_mensile_informativo',
         ]);
         $response->assertJsonPath('netto_annuale', 22425.52);

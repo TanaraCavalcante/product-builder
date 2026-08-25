@@ -140,6 +140,13 @@ function mostraRisultato(dati) {
     document.getElementById('riga-addizionale-comunale').textContent = '- ' + formattaValuta(dati.addizionale_comunale);
     document.getElementById('riga-totale-trattenute').textContent = '- ' + formattaValuta(dati.totale_trattenute);
 
+    document.getElementById('riga-netto-mese-ordinario').textContent =
+        formattaValuta(dati.netto_mensile_dettaglio.mese_ordinario);
+    document.getElementById('riga-netto-mese-luglio').textContent =
+        formattaValuta(dati.netto_mensile_dettaglio.mese_luglio_con_14esima);
+    document.getElementById('riga-netto-mese-dicembre').textContent =
+        formattaValuta(dati.netto_mensile_dettaglio.mese_dicembre_con_13esima);
+
     document.getElementById('badge-incidenza').textContent =
         dati.incidenza_percentuale.toFixed(2).replace('.', ',') + '%';
 

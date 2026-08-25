@@ -1,3 +1,15 @@
+## [2026-08-25] - Dettaglio netto mensile per periodo (13esima/14esima)
+
+### Aggiunto
+- `netto_mensile_dettaglio` nella risposta JSON: netto per mese ordinario, per luglio (con 14esima) e per dicembre (con 13esima), oltre al `netto_mensile_medio` già esistente
+- Sezione "Netto mensile per periodo" in `calcolator.blade.php` con le 3 nuove righe
+- Test unitari e di feature per il nuovo campo
+
+### Modificato
+- `SalaryCalculatorService::calcola()`: il netto annuale viene distribuito su 14 quote uguali (10 mesi ordinari da 1 quota, luglio e dicembre da 2) invece che solo su 12
+
+> **Limite noto (segnalato dall'utente dopo il rilascio):** questa distribuzione è proporzionale e non riflette la tassazione reale della 13esima/14esima, che nella pratica non ricevono la stessa quota di detrazione lavoro dipendente dei mesi ordinari (quindi arrivano nette più basse del previsto) e non includono le addizionali regionale/comunale, trattenute solo da marzo a novembre (`docs/02-salary-calculator-reference.md`, sezione 6.4). Da correggere in un intervento successivo.
+
 ## [2026-08-25] - Rifiniture UI selezione regione e allineamento documentazione
 
 ### Modificato
