@@ -37,6 +37,23 @@
                                 placeholder="Es. 30000"
                                 required
                             >
+                        </div>
+                        <div id="ral-avviso" class="form-text text-warning-emphasis d-none">
+                            <i class="fa-solid fa-triangle-exclamation me-1"></i>Sei sicuro che il valore sia giusto?
+                        </div>
+
+                        <div class="mt-3">
+                            <label for="regione" class="form-label fw-semibold">Regione</label>
+                            <select class="form-select" id="regione" name="regione" required>
+                                @foreach ($regioni as $regione)
+                                    <option value="{{ $regione->value }}" @selected($regione->value === 'toscana')>
+                                        {{ $regione->label() }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="d-flex gap-2 mt-3">
                             <button type="submit" class="btn btn-primary px-4">
                                 <i class="fa-solid fa-magnifying-glass-dollar me-1"></i>Calcola
                             </button>
@@ -48,20 +65,6 @@
                             >
                                 <i class="fa-solid fa-xmark me-1"></i>Reset
                             </button>
-                        </div>
-                        <div id="ral-avviso" class="form-text text-warning-emphasis d-none">
-                            <i class="fa-solid fa-triangle-exclamation me-1"></i>Sei sicuro che il valore sia giusto?
-                        </div>
-
-                        <div class="mt-3">
-                            <label for="regione" class="form-label fw-semibold">Regione</label>
-                            <select class="form-select" id="regione" name="regione" required>
-                                @foreach ($regioni as $regione)
-                                    <option value="{{ $regione->value }}" @selected($regione->value === 'lombardia')>
-                                        {{ $regione->label() }}
-                                    </option>
-                                @endforeach
-                            </select>
                         </div>
                     </form>
 

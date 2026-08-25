@@ -3,13 +3,13 @@
 Data: 2026-08-15
 Stato: APPROVATO
 
-**Progresso**: Fase 1 (N/A) → Fase 2 ✅ completata → Fase 3 ✅ completata → Fase 4 ✅ completata — piano completato
+**Progresso**: Fase 1 (N/A) → Fase 2 ✅ completata → Fase 3 ✅ completata → Fase 4 ✅ completata → Fase 5 ✅ completata (fuori piano originale, vedi sotto) — piano completato
 
 **Esecuzione**: una fase alla volta. Si passa alla fase successiva solo dopo che l'utente ha analizzato e autorizzato esplicitamente il lavoro della fase corrente.
 
 ## Obiettivo
 
-Costruire un prototipo web (Laravel 12 + Blade) in cui l'utente inserisce la RAL (e opzioni correlate) e, cliccando "Calcola", vede sulla stessa pagina — senza reload — il breakdown completo del salario netto secondo la normativa italiana per un dipendente a tempo indeterminato residente a Milano (CCNL Terziario/Commercio), come da `docs/01-project-spec.md`.
+Costruire un prototipo web (Laravel 12 + Blade) in cui l'utente inserisce la RAL (e opzioni correlate) e, cliccando "Calcola", vede sulla stessa pagina — senza reload — il breakdown completo del salario netto secondo la normativa italiana per un dipendente a tempo indeterminato residente a Milano (CCNL Terziario/Commercio), come da `docs/01-project-spec.md`. Obiettivo esteso in Fase 5 a 6 regioni selezionabili (default preselezionato nel form: Toscana; default del parametro `SalaryCalculatorService::calcola()` se omesso: Lombardia).
 
 Nessun login, nessuna persistenza: ogni richiesta è un calcolo stateless.
 
@@ -50,6 +50,18 @@ Nessun login, nessuna persistenza: ogni richiesta è un calcolo stateless.
 - [x] Messaggi di validazione in italiano personalizzati nel Controller (il progetto non pubblica i lang file del framework, altrimenti la chiave di traduzione appariva grezza es. `validation.gt.numeric`)
 - [x] Pulsante "Reset" (`btn-danger`, icona + testo, dopo "Calcola"): visibile solo con testo nel campo, riporta il form allo stato iniziale
 
+### Fase 5 — Generalizzazione multi-regione — COMPLETATA (2026-08-25)
+
+Richiesta dall'utente dopo il completamento del piano originale, non pianificata nelle Fasi 1-4: quanto dichiarato "esplicitamente fuori scope" in `Rischi e note` (nota su Milano/Lombardia fisse) è stato poi implementato.
+
+- [x] Creato `App\Enums\Regione` (backed enum): Lombardia, Piemonte, Veneto, Toscana, Emilia-Romagna, Lazio. Ogni caso espone `scaglioniAddizionaleRegionale()`, `scaglioniAddizionaleComunale()`, `label()` e `comuneRiferimento()`
+- [x] Addizionale comunale approssimata con l'aliquota del capoluogo di regione (Milano, Torino, Venezia, Firenze, Bologna, Roma), senza modellare le soglie di esenzione comunali per basso reddito (semplificazione dichiarata, coerente con le altre di `docs/02-salary-calculator-reference.md` sezione 15)
+- [x] `SalaryCalculatorService::calcola()` accetta `Regione $regione` (default `Lombardia`, per compatibilità con l'uso esistente nei test unitari); `SalaryController` valida `regione` come obbligatoria (`Rule::enum()`)
+- [x] Aggiunto `<select id="regione">` nel form, con Toscana preselezionata come default in UI; i pulsanti "Calcola"/"Reset" spostati sotto il select (prima erano accanto al solo campo RAL, il che suggeriva che bastasse quella per calcolare)
+- [x] Etichette dinamiche "Addizionale Regionale/Comunale (…)" nel breakdown, aggiornate via JS in base a `input.regione_label`/`input.comune_riferimento` restituiti dal JSON
+- [x] Test aggiunti per Piemonte/Torino (scaglioni regionali e comunali diversi da Lombardia/Milano) e per la validazione di `regione`
+- [x] Dati delle aliquote regionali/comunali verificati via ricerca web su fonti ufficiali (MEF, siti dei singoli Comuni/Regioni); Bologna resta con fonte secondaria non confermata sul sito ufficiale del Comune — da riverificare
+
 ## Migration necessarie
 
 Nessuna.
@@ -63,7 +75,7 @@ Nessuna.
 
 ## Rischi e note
 
-- Le aliquote regionali/comunali sono fisse per Milano/Lombardia; supportare altre regioni richiederebbe una tabella di aliquote configurabile — esplicitamente fuori scope (vedi nota su Toscana in `docs/02-salary-calculator-reference.md` sezione 6.3).
+- ~~Le aliquote regionali/comunali sono fisse per Milano/Lombardia; supportare altre regioni richiederebbe una tabella di aliquote configurabile — esplicitamente fuori scope~~ — implementato in Fase 5 (`App\Enums\Regione`, 6 regioni), su richiesta successiva dell'utente. La nota storica su Toscana in `docs/02-salary-calculator-reference.md` sezione 6.3 resta valida come riferimento sulle buste paga analizzate.
 - Dipendenza da CDN esterni (Bootstrap, Font Awesome, Chart.js): senza connessione internet l'app perde stile e interattività, non essendoci fallback locale.
 - Il design visivo della Fase 4 non è stato ancora definito con l'utente: è un passo esplicito da completare prima di iniziare l'implementazione Blade, non un dettaglio da improvvisare in corsa.
 - Le semplificazioni dichiarate in `docs/02-salary-calculator-reference.md` (sezione 15 — cuneo fiscale escluso, nessun onere deducibile, TFR con divisore legale, ecc.) restano valide e vanno citate in un eventuale colloquio.
@@ -71,7 +83,7 @@ Nessuna.
 - Il selettore "tipo di contratto" (determinato/indeterminato) è stato rimosso: verificato empiricamente (RAL €8.000-€32.000) che il minimo garantito Art. 13 TUIR non è mai raggiunto quando si assume un anno lavorativo pieno (semplificazione già dichiarata), quindi la formula produce lo stesso risultato per entrambi i tipi di contratto. Il prototipo copre solo il caso a tempo indeterminato, coerente con la consegna originale del progetto ("il dipendente è un impiegato a tempo indeterminato").
 
 > NOTA (integrata): dato que cada regioao pode obter um calcolo diferente, lembrar de manter na view que o calculo de RAL foram baseadas nas regas de Milano, informado as leis de taxaçao daquelea regiao, caso utente considere pra outro lugar o valor pode sair defasado.
-> — Recepita come task in Fase 4 ("avviso visibile... regole fiscali di Milano/Lombardia").
+> — Recepita come task in Fase 4 ("avviso visibile... regole fiscali di Milano/Lombardia"). Superata dalla Fase 5: l'avviso fisso su Milano/Lombardia è stato sostituito da un select "Regione" che determina il calcolo reale, non solo un disclaimer testuale.
 >
 > executar um plano por vez de modo a analisar bem o que foi escrito em cada fase, so passar a prossima em caso de autorizaçao.
 > — Recepita come regola di esecuzione, vedi riga "Esecuzione" sotto lo Stato in cima al documento.

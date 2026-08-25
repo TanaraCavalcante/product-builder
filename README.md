@@ -1,6 +1,6 @@
 # Calcolatore RAL → Netto
 
-Prototipo web che permette di inserire la RAL (Retribuzione Annua Lorda) e ottenere, sulla stessa pagina e senza reload, il breakdown completo del salario netto secondo la normativa fiscale italiana: contributi INPS, IRPEF a scaglioni, detrazione lavoro dipendente, addizionali regionale (Lombardia) e comunale (Milano), netto annuale/mensile e TFR informativo. Il calcolo assume un dipendente a tempo indeterminato residente e lavorante a Milano (CCNL Terziario/Commercio).
+Prototipo web che permette di inserire la RAL (Retribuzione Annua Lorda) e la Regione di residenza/lavoro, e ottenere, sulla stessa pagina e senza reload, il breakdown completo del salario netto secondo la normativa fiscale italiana: contributi INPS, IRPEF a scaglioni, detrazione lavoro dipendente, addizionali regionale e comunale (variabili in base alla Regione scelta, approssimata sul capoluogo), netto annuale/mensile e TFR informativo. Il calcolo assume un dipendente a tempo indeterminato (CCNL Terziario/Commercio). Regioni supportate: Lombardia, Piemonte, Veneto, Toscana, Emilia-Romagna, Lazio.
 
 Prototipo stateless: nessun login, nessun database.
 

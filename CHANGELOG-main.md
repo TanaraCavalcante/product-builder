@@ -1,3 +1,11 @@
+## [2026-08-25] - Rifiniture UI selezione regione e allineamento documentazione
+
+### Modificato
+- `resources/views/calcolator.blade.php`: i pulsanti "Calcola"/"Reset" sono stati spostati sotto il select "Regione" (prima erano accanto al solo campo RAL, il che suggeriva che bastasse quella per calcolare)
+- Regione preselezionata di default nel form: Toscana (il default del parametro `SalaryCalculatorService::calcola()`, usato solo se `regione` viene omessa, resta Lombardia)
+- `README.md`, `docs/01-project-spec.md`: allineati alla generalizzazione multi-regione (non più descritti come limitati a Milano/Lombardia)
+- `docs/plans/plan-salary-calculator.md`: aggiunta la Fase 5 (generalizzazione multi-regione, fuori piano originale) come nuova sezione; annotate come superate le note storiche che dichiaravano il supporto multi-regione "fuori scope"
+
 ## [2026-08-25] - Generalizzazione multi-regione del calcolatore
 
 ### Aggiunto

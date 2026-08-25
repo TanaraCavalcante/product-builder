@@ -9,7 +9,7 @@ Applicazione web che consente a un utente di inserire la propria **RAL (Retribuz
 
 Il prototipo è pensato per un caso standard e semplificato:
 - Dipendente con contratto a tempo indeterminato
-- Residente e lavorante a **Milano**
+- Residente e lavorante in una delle **6 regioni supportate** (Lombardia, Piemonte, Veneto, Toscana, Emilia-Romagna, Lazio) — originariamente limitato a **Milano**, generalizzato in un secondo momento (vedi `docs/plans/plan-salary-calculator.md`, Fase 5)
 - Nessuna agevolazione fiscale particolare
 - CCNL Terziario/Commercio come riferimento
 
@@ -28,8 +28,11 @@ Lo strumento si rivolge a chiunque voglia capire la propria busta paga: quante t
 | Campo | Tipo | Obbligatorio |
 |---|---|---|
 | RAL (€) | Numero intero o decimale, maggiore di zero | Sì |
+| Regione | Selezione tra le 6 regioni supportate (default in UI: Toscana) | Sì |
 
 > **Nota:** i toggle "tredicesima/quattordicesima inclusa" e il selettore "tipo di contratto" previsti in una prima bozza sono stati rimossi. La RAL rappresenta già il totale annuo (nessuna formula dipende da come si distribuisce nei mesi), e il prototipo copre solo il caso a tempo indeterminato dichiarato nella consegna del progetto — un selettore determinato/indeterminato non avrebbe comunque cambiato alcun risultato, essendo il minimo garantito Art. 13 TUIR irraggiungibile assumendo un anno lavorativo pieno (vedi `docs/plan-salary-calculator.md`, sezione Rischi e note).
+>
+> **Nota (Fase 5):** il campo "Regione" è stato aggiunto in un secondo momento, dopo il completamento del prototipo originale (limitato a Milano/Lombardia), su richiesta esplicita di generalizzazione — vedi `docs/plans/plan-salary-calculator.md`.
 
 ### Output — Risultati da mostrare
 
@@ -41,8 +44,8 @@ Lo strumento si rivolge a chiunque voglia capire la propria busta paga: quante t
 | **IRPEF lorda** | Imposta sul reddito calcolata per scaglioni progressivi |
 | **Detrazione lavoro dipendente** | Sgravio fiscale previsto per i lavoratori dipendenti |
 | **IRPEF netta** | IRPEF lorda al netto della detrazione |
-| **Addizionale Regionale (Lombardia)** | Imposta regionale progressiva |
-| **Addizionale Comunale (Milano)** | Imposta comunale (0,80% flat) |
+| **Addizionale Regionale** | Imposta regionale progressiva, variabile in base alla Regione scelta |
+| **Addizionale Comunale** | Imposta comunale, approssimata sull'aliquota del capoluogo della Regione scelta |
 | **Totale trattenute** | Somma di tutte le voci detratte |
 | **Incidenza % sul lordo** | Percentuale complessiva di tassazione |
 
@@ -56,7 +59,7 @@ Lo strumento si rivolge a chiunque voglia capire la propria busta paga: quante t
 ## Comportamento dell'Applicazione
 
 1. L'utente apre la pagina e vede il form di inserimento
-2. Compila la RAL e le opzioni relative a tredicesima, quattordicesima e tipo di contratto
+2. Compila la RAL e seleziona la Regione
 3. Clicca su **"Calcola"**
 4. I risultati appaiono nella stessa pagina, sotto il form, senza ricaricare la pagina
 5. Tutti i testi, label e risultati sono in **italiano**
@@ -86,12 +89,9 @@ Lo strumento si rivolge a chiunque voglia capire la propria busta paga: quante t
   - [x] ~~Detrazione minima garantita per contratto indeterminato (€1.380)~~ — non implementata: irraggiungibile assumendo un anno lavorativo pieno (la formula base non scende mai sotto €1.910 nella fascia dove il minimo si applicherebbe)
   - [ ] Bonus €65 per redditi tra €25.000 e €35.000
 - [ ] Calcolo IRPEF netta (lorda - detrazione)
-- [ ] Calcolo Addizionale Regionale Lombardia per scaglioni
-  - [ ] ≤ €15.000 → 1,23%
-  - [ ] €15.001–€28.000 → 1,58%
-  - [ ] €28.001–€50.000 → 1,72%
-  - [ ] oltre €50.000 → 1,73%
-- [ ] Calcolo Addizionale Comunale Milano (0,80% flat)
+- [ ] Calcolo Addizionale Regionale per scaglioni, in base alla Regione scelta (Lombardia, Piemonte, Veneto, Toscana, Emilia-Romagna, Lazio — vedi `App\Enums\Regione`)
+  - [ ] Lombardia: ≤ €15.000 → 1,23% · €15.001–€28.000 → 1,58% · €28.001–€50.000 → 1,72% · oltre €50.000 → 1,73%
+- [ ] Calcolo Addizionale Comunale in base al capoluogo della Regione scelta (Milano 0,80% flat; le altre 5 regioni in `App\Enums\Regione::scaglioniAddizionaleComunale()`)
 - [ ] Calcolo netto annuale
 - [ ] Calcolo netto mensile medio (netto / 12)
 - [ ] Calcolo TFR mensile informativo (RAL / 14 / 13,5)
@@ -134,6 +134,8 @@ Elementi noti ma esclusi per semplicità del prototipo:
 | Proporzionalizzazione giorni lavorati | Si assume anno intero |
 | Addizionali anno precedente (rate mensili) | Il calcolatore mostra il dovuto annuale, non le rate |
 | Buoni pasto | Parametro opzionale, non incluso nel caso base |
+| Soglie di esenzione dell'addizionale comunale (es. Firenze <€25.000, Roma <€14.000) | Comunale approssimata sul capoluogo di regione, senza modellare le esenzioni per basso reddito di ogni comune |
+| Addizionale comunale per comune reale dell'utente | Approssimata con l'aliquota del capoluogo di regione (oltre 7.900 comuni in Italia, fuori scope) |
 
 ---
 
@@ -152,7 +154,7 @@ Elementi noti ma esclusi per semplicità del prototipo:
 
 ## Riferimento per i Calcoli
 
-Vedere `docs/02-salary-calculator-reference-IT.md` per:
+Vedere `docs/02-salary-calculator-reference.md` per:
 - Formule complete con fonti ufficiali
 - Verifica empirica su buste paga reali
 - Esempio di calcolo step-by-step (RAL €30.000)
