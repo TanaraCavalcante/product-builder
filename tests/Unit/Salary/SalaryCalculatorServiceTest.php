@@ -4,6 +4,7 @@
 
 namespace Tests\Unit\Salary;
 
+use App\Enums\Regione;
 use App\Services\SalaryCalculatorService;
 use PHPUnit\Framework\TestCase;
 
@@ -32,6 +33,31 @@ class SalaryCalculatorServiceTest extends TestCase
         $this->assertEqualsWithDelta(22425.52, $risultato['netto_annuale'], 0.01);
         $this->assertEqualsWithDelta(1868.79, $risultato['netto_mensile_medio'], 0.01);
         $this->assertSame('indeterminato', $risultato['input']['tipo_contratto']);
+        $this->assertSame('lombardia', $risultato['input']['regione']);
+        $this->assertSame('Milano', $risultato['input']['comune_riferimento']);
+    }
+
+    public function test_calcola_applica_gli_scaglioni_della_regione_selezionata(): void
+    {
+        $risultato = $this->service->calcola(30000.0, Regione::Piemonte);
+
+        // Stesso imponibile fiscale di test_calcola_ral_30000_matches_reference_case (€27.243),
+        // ma con gli scaglioni Piemonte (1,62%/2,68%) al posto di quelli Lombardia (1,23%/1,58%)
+        $this->assertEqualsWithDelta(571.11, $risultato['addizionale_regionale'], 0.01);
+        $this->assertSame('piemonte', $risultato['input']['regione']);
+        $this->assertSame('Piemonte', $risultato['input']['regione_label']);
+        $this->assertSame('Torino', $risultato['input']['comune_riferimento']);
+    }
+
+    public function test_calcola_applica_gli_scaglioni_comunali_di_torino_sopra_i_50000(): void
+    {
+        // RAL €80.000 → imponibile fiscale €72.369,9 (stesso INPS di
+        // test_calcola_ral_alta_attraversa_soglia_massimale_inps), che attraversa tutti
+        // e 4 gli scaglioni comunali di Torino (0,8%/0,8%/1,1%/1,2%) invece dell'aliquota
+        // unica di Milano
+        $risultato = $this->service->calcola(80000.0, Regione::Piemonte);
+
+        $this->assertEqualsWithDelta(734.44, $risultato['addizionale_comunale'], 0.01);
     }
 
     public function test_calcola_ral_bassa(): void

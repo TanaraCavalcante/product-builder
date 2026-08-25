@@ -15,9 +15,9 @@
             <header class="text-center mb-4">
                 <h1 class="h3"><i class="fa-solid fa-calculator text-primary me-2"></i>Calcolatore RAL → Netto</h1>
                 <p class="text-muted small mb-0">
-                    Il calcolo assume un dipendente a tempo indeterminato residente e lavorante a
-                    <strong>Milano</strong> (regole fiscali Lombardia/Milano). Il risultato può risultare
-                    impreciso se applicato ad altre regioni.
+                    Il calcolo assume un dipendente a tempo indeterminato. L'addizionale regionale e
+                    quella comunale seguono la regione selezionata, quest'ultima approssimata con
+                    l'aliquota del capoluogo di regione (senza soglie di esenzione per basso reddito).
                 </p>
             </header>
 
@@ -51,6 +51,17 @@
                         </div>
                         <div id="ral-avviso" class="form-text text-warning-emphasis d-none">
                             <i class="fa-solid fa-triangle-exclamation me-1"></i>Sei sicuro che il valore sia giusto?
+                        </div>
+
+                        <div class="mt-3">
+                            <label for="regione" class="form-label fw-semibold">Regione</label>
+                            <select class="form-select" id="regione" name="regione" required>
+                                @foreach ($regioni as $regione)
+                                    <option value="{{ $regione->value }}" @selected($regione->value === 'lombardia')>
+                                        {{ $regione->label() }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                     </form>
 
@@ -107,11 +118,11 @@
                                     <td class="text-end text-danger" id="riga-irpef-netta">—</td>
                                 </tr>
                                 <tr>
-                                    <td>Addizionale Regionale (Lombardia)</td>
+                                    <td id="riga-addizionale-regionale-label">Addizionale Regionale</td>
                                     <td class="text-end text-danger" id="riga-addizionale-regionale">—</td>
                                 </tr>
                                 <tr>
-                                    <td>Addizionale Comunale (Milano)</td>
+                                    <td id="riga-addizionale-comunale-label">Addizionale Comunale</td>
                                     <td class="text-end text-danger" id="riga-addizionale-comunale">—</td>
                                 </tr>
                                 <tr class="table-group-divider">

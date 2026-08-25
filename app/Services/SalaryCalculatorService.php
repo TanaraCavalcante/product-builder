@@ -2,10 +2,15 @@
 
 namespace App\Services;
 
+use App\Enums\Regione;
+
 /**
  * Calcola la proiezione del netto annuale/mensile a partire dalla RAL, per il caso
- * semplificato: dipendente a tempo indeterminato, residente e lavorante a Milano
- * (CCNL Terziario/Commercio), senza agevolazioni particolari.
+ * semplificato: dipendente a tempo indeterminato (CCNL Terziario/Commercio), senza
+ * agevolazioni particolari. Sia l'addizionale regionale sia quella comunale variano
+ * in base alla Regione indicata: la comunale usa l'aliquota del capoluogo di regione
+ * come approssimazione (vedi Regione::comuneRiferimento()), senza modellare le soglie
+ * di esenzione per basso reddito che i singoli comuni possono applicare.
  *
  * Le formule e le relative fonti sono documentate per intero in
  * docs/02-salary-calculator-reference.md — questa classe ne è la traduzione in codice,
@@ -32,17 +37,6 @@ class SalaryCalculatorService
         ['fino_a' => null, 'aliquota' => 0.43],
     ];
 
-    // Addizionale regionale Lombardia 2026 (Art. 72 L.R. Lombardia n. 10/2003)
-    private const ADDIZIONALE_REGIONALE_SCAGLIONI = [
-        ['fino_a' => 15000.0, 'aliquota' => 0.0123],
-        ['fino_a' => 28000.0, 'aliquota' => 0.0158],
-        ['fino_a' => 50000.0, 'aliquota' => 0.0172],
-        ['fino_a' => null, 'aliquota' => 0.0173],
-    ];
-
-    // Addizionale comunale Milano 2026: aliquota unica, non a scaglioni
-    private const ADDIZIONALE_COMUNALE_MILANO = 0.008;
-
     // Bonus aggiuntivo di detrazione per la fascia di reddito €25.000-€35.000 (Art. 13 TUIR)
     private const DETRAZIONE_BONUS_SOGLIA_MIN = 25000.0;
 
@@ -53,7 +47,7 @@ class SalaryCalculatorService
     /**
      * @return array<string, mixed> il breakdown completo RAL → netto
      */
-    public function calcola(float $ral): array
+    public function calcola(float $ral, Regione $regione = Regione::Lombardia): array
     {
         // Step 1 — Contributi INPS a carico del dipendente
         $inps = $this->applicaScaglioni($ral, self::INPS_SCAGLIONI);
@@ -70,11 +64,11 @@ class SalaryCalculatorService
         // Step 5 — IRPEF netta: la detrazione non può mai far scendere l'imposta sotto zero
         $irpefNetta = max(0.0, $irpefLorda - $detrazione['totale']);
 
-        // Step 6 — Addizionale regionale Lombardia per scaglioni progressivi
-        $addizionaleRegionale = $this->applicaScaglioni($imponibileFiscale, self::ADDIZIONALE_REGIONALE_SCAGLIONI);
+        // Step 6 — Addizionale regionale per scaglioni progressivi, in base alla Regione scelta
+        $addizionaleRegionale = $this->applicaScaglioni($imponibileFiscale, $regione->scaglioniAddizionaleRegionale());
 
-        // Step 7 — Addizionale comunale Milano: aliquota unica sull'intero imponibile
-        $addizionaleComunale = $imponibileFiscale * self::ADDIZIONALE_COMUNALE_MILANO;
+        // Step 7 — Addizionale comunale del capoluogo della Regione scelta (aliquota unica o a scaglioni)
+        $addizionaleComunale = $this->applicaScaglioni($imponibileFiscale, $regione->scaglioniAddizionaleComunale());
 
         // Step 8 — Totale trattenute e netto annuale
         $totaleTrattenute = $inps + $irpefNetta + $addizionaleRegionale + $addizionaleComunale;
@@ -92,6 +86,9 @@ class SalaryCalculatorService
             'input' => [
                 'ral' => round($ral, 2),
                 'tipo_contratto' => self::TIPO_CONTRATTO,
+                'regione' => $regione->value,
+                'regione_label' => $regione->label(),
+                'comune_riferimento' => $regione->comuneRiferimento(),
             ],
             'inps' => round($inps, 2),
             'imponibile_fiscale' => round($imponibileFiscale, 2),

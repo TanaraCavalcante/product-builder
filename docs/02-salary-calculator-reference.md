@@ -56,14 +56,16 @@ RAL (Retribuzione Annua Lorda)
         │     └── (-) Detrazione per lavoro dipendente
         │           └── = IRPEF netta
         │
-        ├── (-) Addizionale Regionale (Lombardia: progressiva per scaglioni)
-        ├── (-) Addizionale Comunale (Milano: 0,80% flat)
+        ├── (-) Addizionale Regionale (progressiva per scaglioni, dipende dalla Regione scelta)
+        ├── (-) Addizionale Comunale (aliquota del capoluogo della Regione scelta)
         │
         └── (+) Benefici cuneo fiscale (L.199/2025, se applicabile)
 
 NETTO ANNUALE = RAL - INPS - IRPEF netta - Add.Reg. - Add.Com.
 NETTO MENSILE = NETTO ANNUALE / 12  (distribuzione media annua)
 ```
+
+> **Dalla generalizzazione multi-regione:** Addizionale Regionale e Addizionale Comunale non sono più fisse su Lombardia/Milano. `SalaryCalculatorService::calcola()` accetta un parametro `Regione $regione` (enum `App\Enums\Regione`, default `Lombardia`) che determina entrambe le aliquote — vedi sezione 6.
 
 ---
 
@@ -186,6 +188,21 @@ Le detrazioni si sottraggono direttamente dall'**IRPEF lorda** (non dalla base i
 
 Vengono pagate l'anno successivo tramite trattenute mensili in busta paga (da marzo a novembre).
 
+### 6.0 Regioni selezionabili nel calcolatore
+
+Il calcolatore non è più limitato al caso Lombardia/Milano: l'utente sceglie una delle 6 regioni supportate dall'enum `App\Enums\Regione`, che determina sia l'addizionale regionale sia quella comunale (Regione::scaglioniAddizionaleRegionale() e Regione::scaglioniAddizionaleComunale()).
+
+| Regione | Capoluogo usato per l'addizionale comunale | Addizionale comunale |
+|---|---|---|
+| Lombardia | Milano | 0,80% flat |
+| Piemonte | Torino | 0,8% / 0,8% / 1,1% / 1,2% a scaglioni |
+| Veneto | Venezia | 0,80% flat |
+| Toscana | Firenze | 0,20% flat |
+| Emilia-Romagna | Bologna | 0,80% flat (fonte secondaria, da riconfermare sul sito ufficiale del Comune) |
+| Lazio | Roma | 0,90% flat |
+
+> **Perché il capoluogo e non il comune reale dell'utente:** l'addizionale comunale varia per singolo comune (oltre 7.900 in Italia), non per regione. Modellare tutti i comuni è fuori scope per questo prototipo; si usa il capoluogo di regione come approssimazione rappresentativa. Non vengono inoltre modellate le **soglie di esenzione per basso reddito** che molti comuni applicano (es. Firenze esenta i redditi fino a €25.000, Roma fino a €14.000): sotto quella soglia il calcolatore sovrastima leggermente la trattenuta comunale rispetto al comune reale.
+
 ### 6.1 Addizionale Regionale Lombardia 2026
 
 **Fonte:** Directio — aliquote ufficiali pubblicate il 28/01/2026.
@@ -198,7 +215,7 @@ Vengono pagate l'anno successivo tramite trattenute mensili in busta paga (da ma
 | €28.001 – €50.000 | 1,72% |
 | Oltre €50.000 | 1,73% |
 
-Il calcolo è progressivo per scaglioni: ogni aliquota si applica solo alla parte di reddito compresa in quella fascia.
+Il calcolo è progressivo per scaglioni: ogni aliquota si applica solo alla parte di reddito compresa in quella fascia. Lo stesso algoritmo (`applicaScaglioni()`) è riusato, con tabelle diverse, per tutte le altre regioni elencate in 6.0.
 
 ### 6.2 Addizionale Comunale Milano 2026
 
@@ -214,7 +231,9 @@ Il calcolo è progressivo per scaglioni: ogni aliquota si applica solo alla part
 | €28.001 – €50.000 | 3,32% |
 | Oltre €50.000 | 3,33% |
 
-> **Nota importante:** Le buste analizzate appartengono a dipendenti residenti in **Toscana**, non in Lombardia. Le addizionali nelle loro buste seguono le aliquote toscane. Il calcolatore del progetto utilizza le aliquote **Lombardia/Milano** come da specifica (dipendente residente a Milano).
+**Fonte:** Dipartimento delle Finanze (finanze.gov.it, regione 17). Fonti secondarie online riportano scaglioni intermedi diversi tra loro; questi valori sono quelli della fonte ufficiale.
+
+> **Nota storica:** Le buste paga analizzate nella sezione 1.3 appartengono a dipendenti residenti in **Toscana**, non in Lombardia — da cui l'interesse iniziale per questi dati. Al momento della prima versione del prototipo, il calcolatore usava comunque solo le aliquote **Lombardia/Milano**; dalla generalizzazione multi-regione, la Toscana è selezionabile come le altre 5 regioni (vedi 6.0).
 
 ### 6.4 Modalità di pagamento in busta paga
 

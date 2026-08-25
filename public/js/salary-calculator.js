@@ -5,6 +5,7 @@ const RAL_SOGLIA_AVVISO = 200000;
 
 const form = document.getElementById('calcolatore-form');
 const ralInput = document.getElementById('ral');
+const regioneSelect = document.getElementById('regione');
 const ralAvviso = document.getElementById('ral-avviso');
 const ralPulisciBtn = document.getElementById('ral-pulisci');
 const erroreBox = document.getElementById('errore');
@@ -87,7 +88,7 @@ form.addEventListener('submit', async (event) => {
                 Accept: 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
             },
-            body: JSON.stringify({ ral: ralInput.value }),
+            body: JSON.stringify({ ral: ralInput.value, regione: regioneSelect.value }),
         });
 
         const dati = await risposta.json();
@@ -131,7 +132,11 @@ function mostraRisultato(dati) {
     document.getElementById('riga-irpef-lorda').textContent = formattaValuta(dati.irpef_lorda);
     document.getElementById('riga-detrazione').textContent = '- ' + formattaValuta(dati.detrazione_lavoro_dipendente);
     document.getElementById('riga-irpef-netta').textContent = '- ' + formattaValuta(dati.irpef_netta);
+    document.getElementById('riga-addizionale-regionale-label').textContent =
+        `Addizionale Regionale (${dati.input.regione_label})`;
     document.getElementById('riga-addizionale-regionale').textContent = '- ' + formattaValuta(dati.addizionale_regionale);
+    document.getElementById('riga-addizionale-comunale-label').textContent =
+        `Addizionale Comunale (${dati.input.comune_riferimento})`;
     document.getElementById('riga-addizionale-comunale').textContent = '- ' + formattaValuta(dati.addizionale_comunale);
     document.getElementById('riga-totale-trattenute').textContent = '- ' + formattaValuta(dati.totale_trattenute);
 

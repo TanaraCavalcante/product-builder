@@ -17,11 +17,11 @@ class SalaryControllerTest extends TestCase
 
     public function test_calcola_returns_expected_json_structure_for_valid_ral(): void
     {
-        $response = $this->postJson('/calcola', ['ral' => 30000]);
+        $response = $this->postJson('/calcola', ['ral' => 30000, 'regione' => 'lombardia']);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'input' => ['ral', 'tipo_contratto'],
+            'input' => ['ral', 'tipo_contratto', 'regione', 'regione_label', 'comune_riferimento'],
             'inps',
             'imponibile_fiscale',
             'irpef_lorda',
@@ -39,9 +39,18 @@ class SalaryControllerTest extends TestCase
         $response->assertJsonPath('netto_annuale', 22425.52);
     }
 
+    public function test_calcola_uses_selected_regione_for_addizionale_regionale(): void
+    {
+        $response = $this->postJson('/calcola', ['ral' => 30000, 'regione' => 'piemonte']);
+
+        $response->assertStatus(200);
+        $response->assertJsonPath('input.regione', 'piemonte');
+        $response->assertJsonPath('addizionale_regionale', 571.11);
+    }
+
     public function test_calcola_requires_ral(): void
     {
-        $response = $this->postJson('/calcola', []);
+        $response = $this->postJson('/calcola', ['regione' => 'lombardia']);
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors('ral');
@@ -49,7 +58,7 @@ class SalaryControllerTest extends TestCase
 
     public function test_calcola_rejects_zero_ral(): void
     {
-        $response = $this->postJson('/calcola', ['ral' => 0]);
+        $response = $this->postJson('/calcola', ['ral' => 0, 'regione' => 'lombardia']);
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors('ral');
@@ -57,7 +66,7 @@ class SalaryControllerTest extends TestCase
 
     public function test_calcola_rejects_negative_ral(): void
     {
-        $response = $this->postJson('/calcola', ['ral' => -1000]);
+        $response = $this->postJson('/calcola', ['ral' => -1000, 'regione' => 'lombardia']);
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors('ral');
@@ -65,9 +74,25 @@ class SalaryControllerTest extends TestCase
 
     public function test_calcola_rejects_non_numeric_ral(): void
     {
-        $response = $this->postJson('/calcola', ['ral' => 'trenta mila']);
+        $response = $this->postJson('/calcola', ['ral' => 'trenta mila', 'regione' => 'lombardia']);
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors('ral');
+    }
+
+    public function test_calcola_requires_regione(): void
+    {
+        $response = $this->postJson('/calcola', ['ral' => 30000]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('regione');
+    }
+
+    public function test_calcola_rejects_invalid_regione(): void
+    {
+        $response = $this->postJson('/calcola', ['ral' => 30000, 'regione' => 'sicilia']);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('regione');
     }
 }
